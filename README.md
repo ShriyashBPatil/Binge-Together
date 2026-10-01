@@ -108,8 +108,8 @@ flowchart TB
 
 ### 2. Clone the Repository
 ```bash
-git clone https://github.com/<YOUR_GITHUB_USERNAME>/binge-together.git
-cd binge-together
+git clone https://github.com/ShriyashBPatil/Binge-Together.git
+cd Binge-Together
 ```
 
 ### 3. Install Dependencies
