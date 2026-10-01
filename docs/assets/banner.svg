@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" width="100%" height="100%">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&amp;family=Space+Grotesk:wght@600;700&amp;family=JetBrains+Mono:wght@600&amp;display=swap');
+      .title { font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-weight: 800; fill: #0f172a; font-size: 52px; letter-spacing: -1px; }
+      .tagline { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-weight: 600; fill: #334155; font-size: 22px; }
+      .badge-text { font-family: 'JetBrains+Mono', monospace; font-size: 13px; font-weight: 700; }
+    </style>
+    <filter id="brutal-shadow" x="-5%" y="-5%" width="115%" height="115%">
+      <feDropShadow dx="6" dy="6" stdDeviation="0" flood-color="#0f172a"/>
+    </filter>
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#e2e8f0" stroke-width="1.5"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="400" fill="#fffdf7" />
+  <rect width="1200" height="400" fill="url(#grid)" />
+
+  <!-- Main Card Container -->
+  <g transform="translate(60, 40)">
+    <rect width="1080" height="320" rx="16" fill="#ffffff" stroke="#0f172a" stroke-width="3.5" filter="url(#brutal-shadow)"/>
+    
+    <!-- Top Bar -->
+    <path d="M 0 16 C 0 7.16 7.16 0 16 0 L 1064 0 C 1072.84 0 1080 7.16 1080 16 L 1080 44 L 0 44 Z" fill="#ffd166" stroke="#0f172a" stroke-width="3.5"/>
+    <!-- Window buttons -->
+    <circle cx="28" cy="22" r="7" fill="#ff5f56" stroke="#0f172a" stroke-width="2"/>
+    <circle cx="50" cy="22" r="7" fill="#ffbd2e" stroke="#0f172a" stroke-width="2"/>
+    <circle cx="72" cy="22" r="7" fill="#27c93f" stroke="#0f172a" stroke-width="2"/>
+    <text x="540" y="27" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" font-weight="700" fill="#0f172a">BINGE-TOGETHER // REAL-TIME COLLABORATIVE WATCH PARTY</text>
+
+    <!-- Main Content -->
+    <g transform="translate(60, 95)">
+      <!-- Popcorn Icon Badge -->
+      <g transform="translate(0, 5)">
+        <rect width="64" height="64" rx="14" fill="#ff6b6b" stroke="#0f172a" stroke-width="3" filter="url(#brutal-shadow)"/>
+        <text x="32" y="44" font-size="34" text-anchor="middle">🍿</text>
+      </g>
+
+      <text x="85" y="40" class="title">BINGETOGETHER</text>
+      <text x="85" y="70" class="tagline">Ultra Low-Latency Synced Video Streaming • WebSockets • WebRTC • HTTP 206 Partial Content</text>
+
+      <!-- Tech Badges -->
+      <g transform="translate(0, 115)">
+        <!-- FastAPI -->
+        <g transform="translate(0, 0)">
+          <rect width="130" height="34" rx="8" fill="#a7f3d0" stroke="#0f172a" stroke-width="2.5" filter="url(#brutal-shadow)"/>
+          <text x="65" y="22" text-anchor="middle" class="badge-text" fill="#065f46">⚡ FASTAPI</text>
+        </g>
+        <!-- WebSockets -->
+        <g transform="translate(145, 0)">
+          <rect width="150" height="34" rx="8" fill="#bae6fd" stroke="#0f172a" stroke-width="2.5" filter="url(#brutal-shadow)"/>
+          <text x="75" y="22" text-anchor="middle" class="badge-text" fill="#0369a1">🔄 WEBSOCKETS</text>
+        </g>
+        <!-- WebRTC -->
+        <g transform="translate(310, 0)">
+          <rect width="130" height="34" rx="8" fill="#fde68a" stroke="#0f172a" stroke-width="2.5" filter="url(#brutal-shadow)"/>
+          <text x="65" y="22" text-anchor="middle" class="badge-text" fill="#854d0e">🎥 WEBRTC</text>
+        </g>
+        <!-- SQLite -->
+        <g transform="translate(455, 0)">
+          <rect width="130" height="34" rx="8" fill="#fed7aa" stroke="#0f172a" stroke-width="2.5" filter="url(#brutal-shadow)"/>
+          <text x="65" y="22" text-anchor="middle" class="badge-text" fill="#9a3412">💾 SQLITE</text>
+        </g>
+        <!-- Range Streaming -->
+        <g transform="translate(600, 0)">
+          <rect width="170" height="34" rx="8" fill="#e9d5ff" stroke="#0f172a" stroke-width="2.5" filter="url(#brutal-shadow)"/>
+          <text x="85" y="22" text-anchor="middle" class="badge-text" fill="#6b21a8">🚀 HTTP 206 RANGE</text>
+        </g>
+        <!-- Zero Deps -->
+        <g transform="translate(785, 0)">
+          <rect width="175" height="34" rx="8" fill="#fbcfe8" stroke="#0f172a" stroke-width="2.5" filter="url(#brutal-shadow)"/>
+          <text x="87" y="22" text-anchor="middle" class="badge-text" fill="#9d174d">📦 ZERO EXTERNAL INFRA</text>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

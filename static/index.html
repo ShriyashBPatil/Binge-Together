@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BingeTogether - Watch Movies & Videos in Sync</title>
+  <meta name="description" content="Watch YouTube videos and local MP4 streams together with friends in real-time synchronized playback, text chat, and WebRTC voice & video calls.">
+  <link rel="stylesheet" href="/static/styles.css?v=14.1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+  <!-- YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+</head>
+<body>
+  <div id="app" class="app-root">
+    
+    <!-- Neo-Brutalist Website Header -->
+    <header class="site-header">
+      <div class="header-container">
+        <!-- Brand / Logo -->
+        <div class="brand" id="btn-brand">
+          <div class="brand-icon-box">
+            <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a2 2 0 0 0 0-4 2 2 0 0 0-4 0 2 2 0 0 0-4 0 2 2 0 0 0-4 0 2 2 0 0 0 0 4"/><path d="M10 22 7 8"/><path d="m14 22 3-14"/><path d="M4 8h16l-2 14H6Z"/></svg>
+          </div>
+          <div class="brand-details">
+            <span class="brand-title">BINGETOGETHER</span>
+            <span class="brand-tagline">WATCH IN PERFECT SYNC</span>
+          </div>
+        </div>
+
+        <!-- Navigation Links (Desktop) -->
+        <nav class="nav-links">
+          <button class="nav-btn active" id="nav-rooms">
+            <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            <span>Public Rooms</span>
+          </button>
+          <button class="nav-btn" id="nav-upload-btn">
+            <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>
+            <span>Upload Video</span>
+          </button>
+          <button class="nav-btn admin-only hidden" id="nav-admin">
+            <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+            <span>Admin Panel</span>
+          </button>
+        </nav>
+
+        <!-- User Authentication & Profile Area -->
+        <div class="header-user-area" id="nav-user-area">
+          <button class="brutal-btn brutal-btn-yellow brutal-btn-sm" id="btn-open-login">
+            <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>
+            <span>Sign In</span>
+          </button>
+          <button class="brutal-btn brutal-btn-mint brutal-btn-sm" id="btn-open-register">
+            <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+            <span>Get Started</span>
+          </button>
+        </div>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button class="mobile-menu-toggle" id="btn-mobile-menu" aria-label="Toggle Navigation">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+      <!-- Mobile Dropdown Navigation -->
+      <div class="mobile-nav-dropdown hidden" id="mobile-nav-dropdown">
+        <button class="mobile-nav-item active" id="m-nav-rooms">
+          <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+          <span>Public Rooms</span>
+        </button>
+        <button class="mobile-nav-item" id="m-nav-upload">
+          <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>
+          <span>Upload Video</span>
+        </button>
+        <button class="mobile-nav-item admin-only hidden" id="m-nav-admin">
+          <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+          <span>Admin Panel</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area with Smooth View Routing -->
+    <main class="site-main">
+
+      <!-- ========================================== -->
+      <!-- VIEW 1: BROWSE & HERO DASHBOARD -->
+      <!-- ========================================== -->
+      <section id="view-browse" class="view-section active">
+        <div class="page-container">
+          
+          <!-- Neo-Brutalist Hero Banner -->
+          <div class="hero-banner">
+            <div class="hero-content">
+              <div class="brutal-pill bg-pastel-yellow hero-badge">
+                <span class="pulse-dot"></span> REAL-TIME SYNCED WATCH PARTIES
+              </div>
+              <h1 class="hero-heading">Watch Movies, Shows & Videos Together in Sync.</h1>
+              <p class="hero-subtext">
+                Stream YouTube or upload local MP4 videos with progressive playback. Hang out with real-time video, voice, and instant chat with low-latency automatic sync.
+              </p>
+              <div class="hero-btn-group">
+                <button class="brutal-btn brutal-btn-mint brutal-btn-lg" id="btn-create-room-modal">
+                  <svg class="lucide icon-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+                  <span>CREATE WATCH ROOM</span>
+                </button>
+                <button class="brutal-btn brutal-btn-white brutal-btn-lg" id="btn-join-code-modal">
+                  <svg class="lucide icon-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18v3c0 .6.4 1 1 1h4v-3h3v-3h2l1.4-1.4a6.5 6.5 0 1 0-4-4Z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+                  <span>JOIN WITH CODE</span>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Hero Feature Bento Cards -->
+            <div class="hero-features-grid">
+              <div class="feature-card bg-pastel-yellow">
+                <div class="feature-header">
+                  <div class="feature-icon-box">
+                    <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  </div>
+                  <strong>2-Sec Drift Sync</strong>
+                </div>
+                <p>Automatic heartbeat pulse keeps everyone's playback timestamps locked in frame-perfect sync.</p>
+              </div>
+              <div class="feature-card bg-pastel-cyan">
+                <div class="feature-header">
+                  <div class="feature-icon-box">
+                    <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg>
+                  </div>
+                  <strong>WebRTC Mesh Call</strong>
+                </div>
+                <p>Free, encrypted peer-to-peer audio & video calls right alongside your synced movie stream.</p>
+              </div>
+              <div class="feature-card bg-pastel-pink">
+                <div class="feature-header">
+                  <div class="feature-icon-box">
+                    <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3Z"/><path d="m6.2 5.3 3.1 3.9"/><path d="m12.4 3.4 3.1 4"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg>
+                  </div>
+                  <strong>Resumable Uploads</strong>
+                </div>
+                <p>Upload large video files with instant 10-minute segmenting so your party can start streaming immediately.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Watch Rooms Section -->
+          <div class="brutal-card section-card">
+            <div class="section-header-row">
+              <div class="section-title-group">
+                <h2 class="section-title">ACTIVE WATCH PARTIES</h2>
+                <p class="section-subtitle">Join an ongoing public watch party or enter your private invite code.</p>
+              </div>
+              <div class="section-actions">
+                <button class="brutal-btn brutal-btn-white brutal-btn-sm" id="btn-refresh-rooms">
+                  <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+                  <span>Refresh Rooms</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Rooms Grid -->
+            <div class="room-grid" id="room-grid-container">
+              <div class="loading-state">
+                <div class="modern-spinner"></div>
+                <p>Loading available watch parties...</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- ========================================== -->
+      <!-- VIEW 2: WATCH PARTY ROOM VIEW -->
+      <!-- ========================================== -->
+      <section id="view-room" class="view-section hidden">
+        <div class="room-page-container">
+          
+          <!-- Top Room Header Bar -->
+          <div class="brutal-card room-header-card">
+            <div class="room-header-left">
+              <button class="brutal-btn brutal-btn-white brutal-btn-sm" id="btn-leave-room" title="Leave Watch Party">
+                <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                <span>EXIT ROOM</span>
+              </button>
+              <div class="room-title-block">
+                <h2 id="room-title-display" class="room-title-text">Watch Party</h2>
+                <div class="room-badges-row">
+                  <span class="brutal-pill bg-pastel-purple" id="room-code-badge">CODE: ----</span>
+                  <span class="brutal-pill bg-pastel-yellow" id="room-host-badge">Host: ---</span>
+                  <span class="brutal-pill bg-pastel-pink hidden" id="room-lock-badge">
+                    <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <span>Private</span>
+                  </span>
+                  <button class="brutal-btn brutal-btn-white brutal-btn-xs hidden" id="btn-toggle-room-privacy" title="Toggle Room Privacy (Public / Private)">
+                    <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <span id="room-privacy-btn-text">Make Private</span>
+                  </button>
+                  <button class="brutal-btn brutal-btn-purple brutal-btn-xs" id="btn-copy-invite" title="Invite Friends & Share Room (QR Code, Email, Link)">
+                    <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg>
+                    <span>Invite &amp; Share</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="room-header-right">
+              <span class="brutal-pill bg-pastel-mint">
+                <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12H3"/><path d="M16 6H3"/><path d="M12 18H3"/><path d="m16 12 5 3-5 3v-6Z"/></svg>
+                <span>Queue (<span id="queue-count-badge">0</span>)</span>
+              </span>
+              <button class="brutal-btn brutal-btn-white brutal-btn-xs" id="btn-toggle-sidebar-header" title="Toggle Chat & Sidebar">
+                <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <span id="header-chat-btn-text">Hide Sidebar</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Stealth Eavesdrop Mode Banner (Admin Only) -->
+          <div id="stealth-mode-banner" class="stealth-banner hidden">
+            <div class="stealth-banner-content">
+              <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"/><path d="M20 12v8H4v-8"/><path d="m4 4 16 16"/><path d="M12 2v4"/><circle cx="12" cy="14" r="2"/></svg>
+              <span><strong>GHOST / EAVESDROP MODE ACTIVE:</strong> You are listening and watching this room silently in incognito mode. You are completely invisible on the participant roster.</span>
+            </div>
+            <button class="brutal-btn brutal-btn-yellow brutal-btn-xs" id="btn-exit-stealth" title="Reveal yourself to the room">
+              <span>Go Public</span>
+            </button>
+          </div>
+
+          <!-- Master 2-Column Responsive Room Layout -->
+          <div class="room-layout" id="room-layout">
+            
+            <!-- Left Column: Video Player & Media Controls -->
+            <div class="player-column">
+              
+              <!-- Media Source Selector Card -->
+              <div class="brutal-card source-card">
+                <div class="source-tabs">
+                  <button class="source-tab-btn active" id="tab-yt-source">
+                    <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m10 8 6 4-6 4V8Z"/></svg>
+                    <span>YouTube URL</span>
+                  </button>
+                  <button class="source-tab-btn" id="tab-local-source">
+                    <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+                    <span>Uploaded MP4s</span>
+                  </button>
+                  <button class="source-tab-btn" id="tab-upload-new">
+                    <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                    <span>+ Upload Video</span>
+                  </button>
+                </div>
+
+                <div class="source-panel" id="panel-yt-source">
+                  <div class="input-with-btn">
+                    <input type="text" id="yt-url-input" class="brutal-input" placeholder="Paste YouTube link (e.g. https://www.youtube.com/watch?v=...)">
+                    <button class="brutal-btn brutal-btn-mint" id="btn-load-yt">
+                      <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                      <span>Load Video</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="source-panel hidden" id="panel-local-source">
+                  <div class="input-with-btn">
+                    <select id="local-video-select" class="brutal-select">
+                      <option value="">Select an uploaded video...</option>
+                    </select>
+                    <button class="brutal-btn brutal-btn-mint" id="btn-load-local">
+                      <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18"/><path d="M3 7.5h4"/><path d="M3 12h18"/><path d="M3 16.5h4"/><path d="M17 3v18"/><path d="M17 7.5h4"/><path d="M17 16.5h4"/></svg>
+                      <span>Stream Video</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Main Video Player Card -->
+              <div class="brutal-card player-card" id="player-card">
+                <!-- Video Monitor Frame (16:9 Aspect Ratio) -->
+                <div class="player-wrapper" id="player-wrapper">
+                  
+                  <!-- YouTube Iframe Frame -->
+                  <div id="yt-player-container" class="player-frame">
+                    <div id="yt-player"></div>
+                  </div>
+
+                  <!-- Native HTML5 Video Frame -->
+                  <div id="html5-player-container" class="player-frame hidden">
+                    <video id="html5-video" class="native-video" playsinline crossorigin="anonymous"></video>
+                  </div>
+
+                  <!-- Member Video Streams & Avatars Overlay (Visible in Fullscreen & Normal Mode) -->
+                  <div id="player-peers-strip" class="player-peers-strip">
+                    <div class="peers-grid" id="peers-grid-container">
+                      <div class="peer-tile local-peer" id="local-peer-box">
+                        <video id="local-video" autoplay playsinline muted></video>
+                        <div class="peer-avatar-fallback" id="local-avatar-fallback">
+                          <img id="local-avatar-img" src="https://api.dicebear.com/7.x/bottts/svg?seed=You&backgroundColor=b6e3f4" class="peer-avatar-img" alt="You">
+                        </div>
+                        <div class="peer-tag-bar">
+                          <span class="peer-name-tag" id="local-peer-name">You (Local)</span>
+                          <span class="peer-state-badge" id="local-mic-badge">
+                            <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Floating Chat Toast Notification Container (Shows new messages when chat is closed) -->
+                  <div id="chat-toast-container" class="chat-toast-container"></div>
+
+                  <!-- In-Player / Fullscreen Floating Live Chat Overlay -->
+                  <div id="player-chat-overlay" class="player-chat-overlay hidden">
+                    <div class="player-chat-header">
+                      <div class="header-icon-label">
+                        <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        <span class="pixel-heading" style="font-size:0.75rem;">LIVE CHAT</span>
+                      </div>
+                      <button type="button" class="btn-close-sm" id="btn-close-player-chat">&times;</button>
+                    </div>
+                    <div class="player-chat-messages" id="player-chat-messages"></div>
+                    <form class="player-chat-form" id="player-chat-form">
+                      <input type="text" id="player-chat-input" class="brutal-input player-chat-input" placeholder="Type a message..." maxlength="500" autocomplete="off">
+                      <button type="submit" class="brutal-btn brutal-btn-yellow brutal-btn-xs btn-icon">
+                        <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                      </button>
+                    </form>
+                  </div>
+
+                  <!-- Tap to Watch / Audio Unmute Overlay -->
+                  <div id="tap-play-overlay" class="tap-play-overlay">
+                    <button class="brutal-btn brutal-btn-yellow brutal-btn-lg pulse-action-btn" id="btn-tap-play">
+                      <svg class="lucide icon-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                      <span>CLICK TO WATCH & SYNC STREAM</span>
+                    </button>
+                  </div>
+
+                  <!-- Real-time Sync Toast Overlay -->
+                  <div id="sync-overlay" class="sync-overlay hidden">
+                    <div class="sync-toast brutal-pill bg-pastel-yellow">
+                      <div class="sync-spinner"></div>
+                      <span id="sync-overlay-text">Syncing playback with host...</span>
+                    </div>
+                  </div>
+
+                  <!-- Hover Hot-Zone for reliable mouse detection over iframes -->
+                  <div class="player-bottom-hit-zone" id="player-bottom-hit-zone"></div>
+
+                  <!-- Modern Brutalist Hover-Overlay Player Controls Toolbar -->
+                  <div class="player-controls-toolbar" id="player-controls-toolbar">
+                    <button class="brutal-btn brutal-btn-white brutal-btn-sm" id="ctrl-play-pause" title="Play/Pause">
+                      <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                    </button>
+                    
+                    <div class="seekbar-container">
+                      <input type="range" id="ctrl-seekbar" class="player-range" min="0" max="100" value="0" step="0.1">
+                    </div>
+
+                    <span class="time-label brutal-pill bg-pastel-yellow" id="ctrl-time-display">00:00 / 00:00</span>
+                    
+                    <button class="brutal-btn brutal-btn-mint brutal-btn-sm" id="ctrl-sync" title="Resync with Host Live Position">
+                      <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+                      <span>SYNC</span>
+                    </button>
+                    <button class="brutal-btn brutal-btn-white brutal-btn-sm" id="ctrl-toggle-cams" title="Toggle Member Video Streams">
+                      <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg>
+                      <span>CAMS</span>
+                    </button>
+                    <button class="brutal-btn brutal-btn-white brutal-btn-sm btn-icon" id="ctrl-fs-toggle-mic" title="Toggle Microphone">
+                      <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+                    </button>
+                    <button class="brutal-btn brutal-btn-white brutal-btn-sm btn-icon" id="ctrl-fs-toggle-cam" title="Toggle Camera">
+                      <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg>
+                    </button>
+                    <button class="brutal-btn brutal-btn-yellow brutal-btn-sm" id="ctrl-toggle-chat" title="Toggle Chat & Sidebar">
+                      <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                      <span>CHAT</span>
+                      <span class="chat-unread-badge hidden" id="chat-unread-badge"></span>
+                    </button>
+                    <button class="brutal-btn brutal-btn-white brutal-btn-sm" id="ctrl-fullscreen" title="Toggle Fullscreen">
+                      <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+                    </button>
+                  </div>
+
+                </div>
+
+                <!-- Now Playing Label Bar -->
+                <div class="now-playing-strip">
+                  <span class="brutal-pill bg-pastel-purple" style="font-size:0.65rem;">STREAMING</span>
+                  <span id="now-playing-title" class="now-playing-text">No media loaded</span>
+                </div>
+              </div>
+
+              <!-- Media Queue & Playlist Card -->
+              <div class="brutal-card queue-card">
+                <div class="card-header-clean bg-pastel-pink">
+                  <div class="header-icon-label">
+                    <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12H3"/><path d="M16 6H3"/><path d="M12 18H3"/><path d="m16 12 5 3-5 3v-6Z"/></svg>
+                    <h3 class="pixel-heading">VIDEO QUEUE (<span id="queue-count-num">0</span>)</h3>
+                  </div>
+                  <button class="brutal-btn brutal-btn-white brutal-btn-xs text-danger" id="btn-clear-queue">
+                    <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                    <span>Clear</span>
+                  </button>
+                </div>
+                <div class="queue-list-container" id="queue-list-container">
+                  <div class="empty-placeholder">No video segments in queue</div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Right Column: WebRTC Voice/Video, Live Chat, and Participants -->
+            <div class="sidebar-column">
+              
+              <!-- WebRTC Voice & Video Call Box -->
+              <div class="brutal-card webrtc-card">
+                <div class="card-header-clean bg-pastel-cyan">
+                  <div class="header-icon-label">
+                    <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+                    <h3 class="pixel-heading">VOICE & VIDEO</h3>
+                  </div>
+                  <div class="webrtc-btn-group">
+                    <button class="brutal-btn brutal-btn-mint brutal-btn-xs" id="btn-start-call">
+                      <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/><path d="M14.05 2a9 9 0 0 1 8 7.94"/><path d="M14.05 6A5 5 0 0 1 18 10"/></svg>
+                      <span>Join Call</span>
+                    </button>
+                    <button class="brutal-btn brutal-btn-white brutal-btn-xs btn-icon" id="btn-toggle-mic" title="Toggle Mic">
+                      <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+                    </button>
+                    <button class="brutal-btn brutal-btn-white brutal-btn-xs btn-icon" id="btn-toggle-cam" title="Toggle Camera">
+                      <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="webrtc-body">
+                  <div id="webrtc-status-msg" class="webrtc-status-text">Click "Join Call" for mesh voice & video.</div>
+                </div>
+              </div>
+
+              <!-- Room Participants Roster -->
+              <div class="brutal-card roster-card">
+                <div class="card-header-clean bg-pastel-yellow">
+                  <div class="header-icon-label">
+                    <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    <h3 class="pixel-heading">MEMBERS (<span id="participant-count-num">0</span>)</h3>
+                  </div>
+                </div>
+                <div class="roster-body">
+                  <ul class="participant-list" id="participant-list"></ul>
+                </div>
+              </div>
+
+              <!-- Live Text Chat Card -->
+              <div class="brutal-card chat-card">
+                <div class="card-header-clean bg-pastel-purple">
+                  <div class="header-icon-label">
+                    <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    <h3 class="pixel-heading">LIVE CHAT</h3>
+                  </div>
+                </div>
+                
+                <!-- Chat Messages Scroll Container -->
+                <div class="chat-messages-wrap" id="chat-messages-container"></div>
+                
+                <!-- Chat Message Form -->
+                <form class="chat-input-bar" id="chat-form">
+                  <input type="text" id="chat-input" class="brutal-input" placeholder="Type a message..." autocomplete="off">
+                  <button type="submit" class="brutal-btn brutal-btn-mint brutal-btn-sm">
+                    <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                    <span>SEND</span>
+                  </button>
+                </form>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ========================================== -->
+      <!-- VIEW 3: ADMIN MANAGEMENT PANEL -->
+      <!-- ========================================== -->
+      <section id="view-admin" class="view-section hidden">
+        <div class="page-container">
+          <div class="brutal-card admin-master-card">
+            
+            <div class="admin-topbar">
+              <div>
+                <h2 class="section-title">
+                  <svg class="lucide icon-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+                  <span>SYSTEM ADMINISTRATION PANEL</span>
+                </h2>
+                <p class="section-subtitle">Manage users, active rooms, permissions, and uploaded media files.</p>
+              </div>
+            </div>
+
+            <!-- Admin Nav Tabs -->
+            <div class="admin-tabs">
+              <button class="source-tab-btn active" id="tab-admin-users">
+                <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <span>Users Management</span>
+              </button>
+              <button class="source-tab-btn" id="tab-admin-rooms">
+                <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
+                <span>Active Rooms</span>
+              </button>
+              <button class="source-tab-btn" id="tab-admin-videos">
+                <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18"/><path d="M3 7.5h4"/><path d="M3 12h18"/><path d="M3 16.5h4"/><path d="M17 3v18"/><path d="M17 7.5h4"/><path d="M17 16.5h4"/></svg>
+                <span>Uploaded Videos</span>
+              </button>
+              <button class="source-tab-btn" id="tab-admin-smtp">
+                <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                <span>SMTP & Email Settings</span>
+              </button>
+            </div>
+
+            <!-- Users Management Table -->
+            <div id="admin-panel-users" class="admin-content-pane active">
+              <div class="table-responsive">
+                <table class="brutal-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>User</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                      <th>Joined</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-users-table-body">
+                    <tr><td colspan="6" class="text-center">Loading registered users...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Active Rooms Monitoring Table -->
+            <div id="admin-panel-rooms" class="admin-content-pane hidden">
+              <div class="admin-sub-header">
+                <h3 class="pixel-heading">
+                  <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
+                  <span>LIVE ACTIVE WATCH ROOMS</span>
+                </h3>
+                <button class="brutal-btn brutal-btn-white brutal-btn-sm" id="btn-refresh-admin-rooms">
+                  <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+                  <span>Refresh Rooms</span>
+                </button>
+              </div>
+              <div class="table-responsive">
+                <table class="brutal-table">
+                  <thead>
+                    <tr>
+                      <th>Code</th>
+                      <th>Room Name</th>
+                      <th>Host</th>
+                      <th>Active Video</th>
+                      <th>Members</th>
+                      <th>Connected</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-rooms-table-body">
+                    <tr><td colspan="7" class="text-center">Loading active rooms...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Uploaded Video Files Table -->
+            <div id="admin-panel-videos" class="admin-content-pane hidden">
+              <div class="admin-sub-header">
+                <h3 class="pixel-heading">
+                  <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+                  <span>SERVER MEDIA LIBRARY</span>
+                </h3>
+                <button class="brutal-btn brutal-btn-pink brutal-btn-sm" id="btn-delete-all-videos">
+                  <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                  <span>Delete All Videos</span>
+                </button>
+              </div>
+              <div class="table-responsive">
+                <table class="brutal-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Filename</th>
+                      <th>File Size</th>
+                      <th>Uploaded By</th>
+                      <th>Upload Date</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-videos-table-body">
+                    <tr><td colspan="6" class="text-center">Loading media files...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- SMTP & Email Configuration Panel -->
+            <div id="admin-panel-smtp" class="admin-content-pane hidden">
+              <div class="admin-sub-header">
+                <h3 class="pixel-heading">
+                  <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                  <span>SMTP & EMAIL CONFIGURATION</span>
+                </h3>
+                <span class="brutal-pill bg-pastel-mint">Transactional & Recovery System</span>
+              </div>
+
+              <div class="smtp-config-layout">
+                <form id="form-admin-smtp" class="smtp-form-card brutal-card">
+                  <div class="card-header-clean bg-pastel-yellow">
+                    <h4 class="pixel-heading" style="font-size:0.75rem; margin:0;">SMTP SERVER CREDENTIALS</h4>
+                  </div>
+                  <div style="padding: 1.25rem;">
+                    <div class="form-grid-2">
+                      <div class="form-group">
+                        <label class="form-label">SMTP HOST / SERVER *</label>
+                        <input type="text" id="smtp-host-input" class="brutal-input" placeholder="e.g. smtp.gmail.com or mail.yourdomain.com" required>
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">SMTP PORT *</label>
+                        <input type="number" id="smtp-port-input" class="brutal-input" placeholder="587 (TLS) or 465 (SSL)" required value="587">
+                      </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                      <div class="form-group">
+                        <label class="form-label">SMTP USERNAME / EMAIL</label>
+                        <input type="text" id="smtp-user-input" class="brutal-input" placeholder="your-email@gmail.com">
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">SMTP PASSWORD / APP PASSWORD</label>
+                        <input type="password" id="smtp-pass-input" class="brutal-input" placeholder="App password or SMTP secret">
+                        <small style="font-size:0.72rem; color:var(--text-muted);">Leave empty to keep existing password</small>
+                      </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                      <div class="form-group">
+                        <label class="form-label">SENDER EMAIL ADDRESS (FROM)</label>
+                        <input type="email" id="smtp-from-email-input" class="brutal-input" placeholder="no-reply@bingetogether.com">
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">SENDER DISPLAY NAME</label>
+                        <input type="text" id="smtp-from-name-input" class="brutal-input" placeholder="BingeTogether" value="BingeTogether">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="form-label">APPLICATION PUBLIC URL</label>
+                      <input type="url" id="smtp-app-url-input" class="brutal-input" placeholder="https://your-domain.com:6969" value="https://localhost:6969">
+                      <small style="font-size:0.72rem; color:var(--text-muted);">Used in password reset links and welcome emails</small>
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; gap:0.5rem; margin:1rem 0;">
+                      <label class="form-check" style="margin:0;">
+                        <input type="checkbox" id="smtp-use-tls-input" checked class="brutal-checkbox">
+                        <span><strong>Use STARTTLS (Port 587)</strong> — Recommended for Gmail / Outlook</span>
+                      </label>
+                      <label class="form-check" style="margin:0;">
+                        <input type="checkbox" id="smtp-use-ssl-input" class="brutal-checkbox">
+                        <span><strong>Use Direct SSL/TLS (Port 465)</strong></span>
+                      </label>
+                      <label class="form-check" style="margin:0;">
+                        <input type="checkbox" id="smtp-welcome-email-input" checked class="brutal-checkbox">
+                        <span><strong>Send Welcome Email</strong> automatically when new users register</span>
+                      </label>
+                    </div>
+
+                    <button type="submit" class="brutal-btn brutal-btn-mint" style="width:100%; padding:0.75rem;">
+                      <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                      <span>SAVE SMTP SETTINGS</span>
+                    </button>
+                  </div>
+                </form>
+
+                <!-- Interactive SMTP Test Card -->
+                <div class="smtp-test-card brutal-card">
+                  <div class="card-header-clean bg-pastel-pink">
+                    <h4 class="pixel-heading" style="font-size:0.75rem; margin:0;">TEST EMAIL DELIVERY</h4>
+                  </div>
+                  <div style="padding: 1.25rem;">
+                    <p style="font-size:0.85rem; margin-top:0;">Send an immediate test email to verify your SMTP server connection and mail delivery.</p>
+                    <form id="form-test-smtp">
+                      <div class="form-group">
+                        <label class="form-label">RECIPIENT EMAIL ADDRESS *</label>
+                        <input type="email" id="test-smtp-email-input" class="brutal-input" placeholder="your-personal-email@domain.com" required>
+                      </div>
+                      <button type="submit" class="brutal-btn brutal-btn-yellow" id="btn-send-test-email" style="width:100%;">
+                        <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="22" x2="11" y1="2" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                        <span>SEND TEST EMAIL →</span>
+                      </button>
+                    </form>
+
+                    <div id="test-smtp-result" class="hidden" style="margin-top:1rem; padding:0.85rem; border:2.5px solid var(--border-dark); border-radius:var(--radius-sm); font-size:0.82rem; font-weight:600;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Neo-Brutalist Footer -->
+    <footer class="site-footer">
+      <div class="footer-container">
+        <div class="footer-left">
+          <strong>BINGETOGETHER</strong> — Real-time synchronized watch parties.
+        </div>
+        <div class="footer-right">
+          <span class="brutal-pill bg-pastel-mint">
+            <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.48 12H2"/></svg>
+            <span>SERVER ONLINE (PORT 6868)</span>
+          </span>
+        </div>
+      </div>
+    </footer>
+
+
+    <!-- ========================================== -->
+    <!-- NEO-BRUTALIST MODALS -->
+    <!-- ========================================== -->
+
+    <!-- Guest Join Nickname & Avatar Modal -->
+    <div class="modal-backdrop hidden" id="modal-guest-join">
+      <div class="brutal-modal-dialog">
+        <div class="modal-header bg-pastel-yellow">
+          <div class="header-icon-label">
+            <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+            <h3 class="pixel-heading">JOIN AS GUEST</h3>
+          </div>
+          <button class="btn-close close-modal" aria-label="Close">&times;</button>
+        </div>
+        <form id="form-guest-join" class="modal-form">
+          <input type="hidden" id="guest-target-room-code">
+          <input type="hidden" id="guest-target-passcode">
+          
+          <div class="guest-preview-row">
+            <img id="guest-preview-avatar-img" class="guest-preview-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=PixelHero&backgroundColor=ffd5dc" alt="Guest Avatar">
+            <div>
+              <span class="brutal-pill bg-pastel-mint" style="font-size:0.6rem; padding:0.1rem 0.35rem; margin-bottom:0.25rem;">GUEST IDENTITY</span>
+              <div id="guest-preview-nickname" style="font-family:var(--font-pixel); font-size:0.85rem; font-weight:700;">PixelHero</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">CHOOSE A NICKNAME *</label>
+            <input type="text" id="guest-nickname-input" class="brutal-input" placeholder="e.g. PopcornLover, RetroPilot" required maxlength="20">
+          </div>
+
+          <div class="form-group">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <label class="form-label" style="margin-bottom:0;">SELECT AN AVATAR</label>
+              <button type="button" class="brutal-btn brutal-btn-white brutal-btn-xs" id="btn-random-avatar">
+                <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+                <span>Randomize</span>
+              </button>
+            </div>
+            
+            <div class="avatar-picker-grid" id="avatar-picker-grid">
+              <!-- Dynamically populated avatar cards -->
+            </div>
+            <input type="hidden" id="guest-selected-avatar-url">
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="brutal-btn brutal-btn-white close-modal">Cancel</button>
+            <button type="submit" class="brutal-btn brutal-btn-mint">ENTER WATCH PARTY →</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Create Room Modal -->
+    <div class="modal-backdrop hidden" id="modal-create-room">
+      <div class="brutal-modal-dialog">
+        <div class="modal-header bg-pastel-yellow">
+          <div class="header-icon-label">
+            <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+            <h3 class="pixel-heading">CREATE A WATCH ROOM</h3>
+          </div>
+          <button class="btn-close close-modal" aria-label="Close">&times;</button>
+        </div>
+        <form id="form-create-room" class="modal-form">
+          <div class="form-group">
+            <label class="form-label">ROOM NAME *</label>
+            <input type="text" id="create-room-name" class="brutal-input" placeholder="e.g. Friday Movie Night" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">DESCRIPTION (OPTIONAL)</label>
+            <input type="text" id="create-room-desc" class="brutal-input" placeholder="e.g. Chilling and watching anime!">
+          </div>
+          <div class="form-group">
+            <label class="form-label">INITIAL YOUTUBE URL (OPTIONAL)</label>
+            <input type="text" id="create-room-yt" class="brutal-input" placeholder="https://www.youtube.com/watch?v=...">
+          </div>
+          
+          <div class="form-check">
+            <input type="checkbox" id="create-room-private" class="brutal-checkbox">
+            <label for="create-room-private">Make Room Private (Requires passcode to join)</label>
+          </div>
+          <div class="form-group hidden" id="group-passcode">
+            <label class="form-label">ROOM PASSCODE</label>
+            <input type="password" id="create-room-passcode" class="brutal-input" placeholder="Enter a secret password">
+          </div>
+
+          <div class="form-check">
+            <input type="checkbox" id="create-room-hostonly" class="brutal-checkbox">
+            <label for="create-room-hostonly">Host-Only Controls (Prevent guests from seeking)</label>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="brutal-btn brutal-btn-white close-modal">Cancel</button>
+            <button type="submit" class="brutal-btn brutal-btn-mint">CREATE ROOM →</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Join Passcode Modal -->
+    <div class="modal-backdrop hidden" id="modal-join-passcode">
+      <div class="brutal-modal-dialog">
+        <div class="modal-header bg-pastel-pink">
+          <div class="header-icon-label">
+            <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <h3 class="pixel-heading">PRIVATE ROOM PASSCODE</h3>
+          </div>
+          <button class="btn-close close-modal" aria-label="Close">&times;</button>
+        </div>
+        <form id="form-join-passcode" class="modal-form">
+          <input type="hidden" id="join-room-code-hidden">
+          <div class="form-group">
+            <label class="form-label">ENTER ROOM PASSCODE</label>
+            <input type="password" id="join-room-passcode-input" class="brutal-input" placeholder="Password" required autofocus>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="brutal-btn brutal-btn-white close-modal">Cancel</button>
+            <button type="submit" class="brutal-btn brutal-btn-mint">UNLOCK & JOIN →</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Chunked Video Upload Modal -->
+    <div class="modal-backdrop hidden" id="modal-upload-video">
+      <div class="brutal-modal-dialog modal-dialog-lg">
+        <div class="modal-header bg-pastel-purple">
+          <div class="header-icon-label">
+            <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>
+            <h3 class="pixel-heading">UPLOAD VIDEO FILE (RESUMABLE)</h3>
+          </div>
+          <button class="btn-close close-modal" aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-form">
+          <div class="upload-dropzone" id="upload-dropzone">
+            <input type="file" id="upload-file-input" accept="video/*,.mp4,.mkv,.webm,.mov,.avi,.flv,.wmv,.m4v,.3gp,.ts,.ogv" class="hidden">
+            <div class="dropzone-body">
+              <div class="dropzone-icon-box">
+                <svg class="lucide icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>
+              </div>
+              <p><strong>Click to choose video file (MKV, MP4, WebM, MOV)</strong> or drag & drop here</p>
+              <span class="dropzone-hint">Resumable high-speed chunked upload with instant range-seeking</span>
+            </div>
+          </div>
+
+          <div id="upload-progress-container" class="upload-progress-container hidden">
+            <div class="progress-track">
+              <div id="upload-progress-fill" class="progress-fill"></div>
+            </div>
+            <div class="progress-labels">
+              <span id="upload-status-text">Uploading chunks...</span>
+              <span id="upload-percent-text">0%</span>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="brutal-btn brutal-btn-white close-modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sign In Modal -->
+    <div class="modal-backdrop hidden" id="modal-login">
+      <div class="brutal-modal-dialog">
+        <div class="modal-header bg-pastel-yellow">
+          <div class="header-icon-label">
+            <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>
+            <h3 class="pixel-heading">SIGN IN</h3>
+          </div>
+          <button class="btn-close close-modal" aria-label="Close">&times;</button>
+        </div>
+        <form id="form-login" class="modal-form">
+          <div class="form-group">
+            <label class="form-label">USERNAME</label>
+            <input type="text" id="login-username" class="brutal-input" placeholder="Your username" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">PASSWORD</label>
+            <input type="password" id="login-password" class="brutal-input" placeholder="Your password" required>
+          </div>
+          <div style="display:flex; justify-content:flex-end; margin-top:-0.4rem; margin-bottom:0.75rem;">
+            <a href="#" id="link-forgot-credentials" style="font-size:0.75rem; font-weight:700; color:var(--text-dark); text-decoration:underline;">
+              Forgot Username or Password?
+            </a>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="brutal-btn brutal-btn-white close-modal">Cancel</button>
+            <button type="submit" class="brutal-btn brutal-btn-mint">SIGN IN →</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Account Recovery Modal (Forgot Username / Password) -->
+    <div class="modal-backdrop hidden" id="modal-forgot-credentials">
+      <div class="brutal-modal-dialog">
+        <div class="modal-header bg-pastel-pink">
+          <div class="header-icon-label">
+            <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <h3 class="pixel-heading">ACCOUNT RECOVERY</h3>
+          </div>
+          <button class="btn-close close-modal" aria-label="Close">&times;</button>
+        </div>
+
+        <!-- Recovery Subtabs -->
+        <div class="admin-tabs" style="border-top:none; padding:0.5rem 1rem 0; margin-bottom:0.5rem;">
+          <button type="button" class="source-tab-btn active" id="btn-subtab-find-user">
+            <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <span>Find Username</span>
+          </button>
+          <button type="button" class="source-tab-btn" id="btn-subtab-reset-pass">
+            <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-1.5 1.5L10 13l-4 4-2-2 4-4 7.5-7.5M3 21l3-3"/></svg>
+            <span>Reset Password</span>
+          </button>
+        </div>
+
+        <!-- Pane 1: Find Username -->
+        <div id="pane-recovery-find-user" class="recovery-pane">
+          <form id="form-forgot-username" class="modal-form">
+            <p style="font-size:0.85rem; margin-top:0; margin-bottom:0.75rem;">Enter your registered email address and we'll send your username immediately.</p>
+            <div class="form-group">
+              <label class="form-label">REGISTERED EMAIL *</label>
+              <input type="email" id="forgot-user-email" class="brutal-input" placeholder="you@example.com" required>
+            </div>
+            <div id="forgot-user-msg" class="hidden" style="margin-bottom:0.75rem; padding:0.65rem; border:2px solid var(--border-dark); border-radius:var(--radius-sm); font-size:0.8rem; font-weight:600;"></div>
+            <div class="modal-footer">
+              <button type="button" class="brutal-btn brutal-btn-white close-modal">Cancel</button>
+              <button type="submit" class="brutal-btn brutal-btn-mint">EMAIL MY USERNAME →</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Pane 2: Reset Password -->
+        <div id="pane-recovery-reset-pass" class="recovery-pane hidden">
+          <!-- Step 1: Request Code -->
+          <form id="form-forgot-pass-request" class="modal-form">
+            <p style="font-size:0.85rem; margin-top:0; margin-bottom:0.75rem;">Enter your username or email to receive a 6-digit password reset code.</p>
+            <div class="form-group">
+              <label class="form-label">USERNAME OR EMAIL *</label>
+              <input type="text" id="forgot-pass-target" class="brutal-input" placeholder="Your username or email" required>
+            </div>
+            <div id="forgot-pass-req-msg" class="hidden" style="margin-bottom:0.75rem; padding:0.65rem; border:2px solid var(--border-dark); border-radius:var(--radius-sm); font-size:0.8rem; font-weight:600;"></div>
+            <div class="modal-footer">
+              <button type="button" class="brutal-btn brutal-btn-white close-modal">Cancel</button>
+              <button type="submit" class="brutal-btn brutal-btn-mint">SEND RESET CODE →</button>
+            </div>
+          </form>
+
+          <!-- Step 2: Enter Code & New Password -->
+          <form id="form-forgot-pass-confirm" class="modal-form hidden" style="border-top: 2px dashed var(--border-dark); margin-top: 0.5rem; padding-top: 0.75rem;">
+            <div class="form-group">
+              <label class="form-label">6-DIGIT RESET CODE *</label>
+              <input type="text" id="reset-code-input" class="brutal-input" placeholder="e.g. 849201" required maxlength="6" style="font-family:var(--font-mono); font-size:1.1rem; letter-spacing:3px;">
+            </div>
+            <div class="form-group">
+              <label class="form-label">NEW PASSWORD *</label>
+              <input type="password" id="reset-new-pass-input" class="brutal-input" placeholder="At least 6 characters" required>
+            </div>
+            <div id="reset-pass-confirm-msg" class="hidden" style="margin-bottom:0.75rem; padding:0.65rem; border:2px solid var(--border-dark); border-radius:var(--radius-sm); font-size:0.8rem; font-weight:600;"></div>
+            <div class="modal-footer">
+              <button type="button" class="brutal-btn brutal-btn-white" id="btn-back-to-step1">Back</button>
+              <button type="submit" class="brutal-btn brutal-btn-yellow">SET NEW PASSWORD →</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal-backdrop hidden" id="modal-register">
+      <div class="brutal-modal-dialog">
+        <div class="modal-header bg-pastel-mint">
+          <div class="header-icon-label">
+            <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+            <h3 class="pixel-heading">REGISTER ACCOUNT</h3>
+          </div>
+          <button class="btn-close close-modal" aria-label="Close">&times;</button>
+        </div>
+        <form id="form-register" class="modal-form">
+          <div class="form-group">
+            <label class="form-label">USERNAME</label>
+            <input type="text" id="reg-username" class="brutal-input" placeholder="Choose a username" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">EMAIL ADDRESS</label>
+            <input type="email" id="reg-email" class="brutal-input" placeholder="user@domain.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">PASSWORD</label>
+            <input type="password" id="reg-password" class="brutal-input" placeholder="At least 6 characters" required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="brutal-btn brutal-btn-white close-modal">Cancel</button>
+            <button type="submit" class="brutal-btn brutal-btn-mint">REGISTER →</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div class="modal-backdrop hidden" id="modal-edit-user">
+      <div class="brutal-modal-dialog">
+        <div class="modal-header bg-pastel-cyan">
+          <div class="header-icon-label">
+            <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="15" r="3"/><circle cx="9" cy="7" r="4"/><path d="M10 15H6a4 4 0 0 0-4 4v2"/><path d="m21.7 16.4-.9-.3"/><path d="m15.2 13.9-.9-.3"/><path d="m16.6 18.7.3-.9"/><path d="m19.1 12.2.3-.9"/><path d="m19.6 18.7-.4-.8"/><path d="m16.1 12.2-.4-.8"/><path d="m15.2 16.1.9-.3"/><path d="m21.7 13.6.9-.3"/></svg>
+            <h3 id="edit-user-title" class="pixel-heading">EDIT USER PROFILE</h3>
+          </div>
+          <button class="btn-close close-modal" aria-label="Close">&times;</button>
+        </div>
+        <form id="form-edit-user" class="modal-form">
+          <input type="hidden" id="edit-user-id">
+          <div class="form-group">
+            <label class="form-label">USERNAME</label>
+            <input type="text" id="edit-user-username" class="brutal-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label">EMAIL</label>
+            <input type="email" id="edit-user-email" class="brutal-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label">BIO / STATUS</label>
+            <input type="text" id="edit-user-bio" class="brutal-input" placeholder="Binging movies 24/7">
+          </div>
+          <div class="form-group">
+            <label class="form-label">NEW PASSWORD (LEAVE EMPTY TO KEEP CURRENT)</label>
+            <input type="password" id="edit-user-newpass" class="brutal-input" placeholder="New password">
+          </div>
+          <div class="form-check admin-only hidden" id="group-admin-toggle">
+            <input type="checkbox" id="edit-user-isadmin" class="brutal-checkbox">
+            <label for="edit-user-isadmin">Administrator Privileges</label>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="brutal-btn brutal-btn-white close-modal">Cancel</button>
+            <button type="submit" class="brutal-btn brutal-btn-mint">SAVE CHANGES →</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Custom Neo-Brutalist Alert Modal (Replaces browser alert) -->
+    <div class="modal-backdrop hidden" id="modal-custom-alert" style="z-index: 99999;">
+      <div class="brutal-modal-dialog" style="max-width: 440px;">
+        <div class="modal-header bg-pastel-yellow" id="alert-modal-header">
+          <div class="header-icon-label">
+            <div id="alert-modal-icon">
+              <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+            </div>
+            <h3 id="alert-modal-title" class="pixel-heading">NOTIFICATION</h3>
+          </div>
+          <button class="btn-close" id="btn-close-alert-x" aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body" style="padding: 1.5rem 1.25rem;">
+          <p id="alert-modal-msg" style="font-size: 0.95rem; font-weight: 600; line-height: 1.5; margin: 0; word-break: break-word;"></p>
+        </div>
+        <div class="modal-footer" style="padding: 0.85rem 1.25rem; background-color: var(--bg-card);">
+          <button type="button" class="brutal-btn brutal-btn-yellow" id="btn-alert-ok" style="min-width: 100px;">
+            <span>OK, GOT IT →</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom Neo-Brutalist Confirm Modal (Replaces browser confirm) -->
+    <div class="modal-backdrop hidden" id="modal-custom-confirm" style="z-index: 99999;">
+      <div class="brutal-modal-dialog" style="max-width: 460px;">
+        <div class="modal-header bg-pastel-pink" id="confirm-modal-header">
+          <div class="header-icon-label">
+            <div id="confirm-modal-icon">
+              <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+            </div>
+            <h3 id="confirm-modal-title" class="pixel-heading">CONFIRM ACTION</h3>
+          </div>
+          <button class="btn-close" id="btn-close-confirm-x" aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body" style="padding: 1.5rem 1.25rem;">
+          <p id="confirm-modal-msg" style="font-size: 0.95rem; font-weight: 600; line-height: 1.5; margin: 0; word-break: break-word;"></p>
+        </div>
+        <div class="modal-footer" style="padding: 0.85rem 1.25rem; background-color: var(--bg-card); display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" class="brutal-btn brutal-btn-white" id="btn-confirm-cancel">Cancel</button>
+          <button type="button" class="brutal-btn brutal-btn-pink" id="btn-confirm-ok">
+            <span id="confirm-btn-ok-text">Confirm →</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom Neo-Brutalist Prompt Modal (Replaces browser prompt) -->
+    <div class="modal-backdrop hidden" id="modal-custom-prompt" style="z-index: 99999;">
+      <div class="brutal-modal-dialog" style="max-width: 480px;">
+        <div class="modal-header bg-pastel-cyan">
+          <div class="header-icon-label">
+            <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <h3 id="prompt-modal-title" class="pixel-heading">INPUT REQUIRED</h3>
+          </div>
+          <button class="btn-close" id="btn-close-prompt-x" aria-label="Close">&times;</button>
+        </div>
+        <form id="form-custom-prompt" class="modal-form">
+          <div class="form-group" style="margin-bottom: 1.25rem;">
+            <label id="prompt-modal-label" class="form-label" style="font-size: 0.88rem; margin-bottom: 0.5rem; display: block;"></label>
+            <input type="text" id="prompt-modal-input" class="brutal-input" style="width: 100%; font-size: 0.95rem;">
+          </div>
+          <div class="modal-footer" style="padding-top: 0;">
+            <button type="button" class="brutal-btn brutal-btn-white" id="btn-prompt-cancel">Cancel</button>
+            <button type="submit" class="brutal-btn brutal-btn-mint" id="btn-prompt-submit">SUBMIT →</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Room Share & Invite Modal with QR Code & Email Invites -->
+    <div class="modal-backdrop hidden" id="modal-share-room">
+      <div class="brutal-modal-dialog" style="max-width: 520px;">
+        <div class="modal-header bg-pastel-purple">
+          <div class="header-icon-label">
+            <svg class="lucide icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg>
+            <h3 class="pixel-heading">INVITE FRIENDS & SHARE</h3>
+          </div>
+          <button class="btn-close close-modal" aria-label="Close">&times;</button>
+        </div>
+
+        <!-- Sub-Tabs: QR/Link vs Email Invites -->
+        <div class="modal-tabs">
+          <button type="button" class="modal-tab-btn active" id="subtab-share-link">
+            <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h.01"/><path d="M17 7h.01"/><path d="M7 17h.01"/><path d="M17 17h.01"/></svg>
+            <span>QR &amp; Direct Link</span>
+          </button>
+          <button type="button" class="modal-tab-btn" id="subtab-share-email">
+            <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <span>Email Friends (SMTP)</span>
+          </button>
+        </div>
+
+        <div class="modal-body" style="padding: 1.25rem;">
+          
+          <!-- Pane 1: QR & Direct Link -->
+          <div id="pane-share-link" style="text-align: center;">
+            <!-- QR Code Container Card -->
+            <div class="qr-code-wrapper" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 1rem;">
+              <div id="room-qr-code" class="qr-canvas-box"></div>
+              <p style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-top: 0.5rem; margin-bottom: 0;">Scan with phone camera to join instantly</p>
+            </div>
+
+            <!-- Room Info Badges -->
+            <div style="display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+              <span class="brutal-pill bg-pastel-purple" id="share-room-code-badge">CODE: ----</span>
+              <span class="brutal-pill bg-pastel-pink hidden" id="share-room-pass-badge">Passcode: ----</span>
+            </div>
+
+            <!-- Direct URL Copy Field -->
+            <div class="form-group" style="margin-bottom: 1rem; text-align: left;">
+              <label class="form-label" style="font-size: 0.8rem;">ROOM LINK</label>
+              <div class="input-with-btn">
+                <input type="text" id="share-room-url-input" class="brutal-input font-mono" style="font-size: 0.85rem;" readonly>
+                <button class="brutal-btn brutal-btn-mint" id="btn-copy-modal-url">
+                  <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                  <span id="copy-modal-btn-text">Copy Link</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Copy Full Invite Note Button -->
+            <div style="margin-bottom: 1rem;">
+              <button class="brutal-btn brutal-btn-yellow brutal-btn-xs" id="btn-copy-invite-text" style="width: 100%;">
+                <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/></svg>
+                <span id="copy-invite-text-btn-label">Copy Full Invite Message (with Code &amp; Link)</span>
+              </button>
+            </div>
+
+            <!-- Quick Social Share Links -->
+            <div style="display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap;">
+              <button class="brutal-btn brutal-btn-white brutal-btn-xs" id="btn-native-share" style="display: none;">
+                <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>
+                <span>Share...</span>
+              </button>
+              <a href="#" id="share-whatsapp" target="_blank" rel="noopener" class="brutal-btn brutal-btn-mint brutal-btn-xs">WhatsApp</a>
+              <a href="#" id="share-telegram" target="_blank" rel="noopener" class="brutal-btn brutal-btn-cyan brutal-btn-xs">Telegram</a>
+              <a href="#" id="share-twitter" target="_blank" rel="noopener" class="brutal-btn brutal-btn-yellow brutal-btn-xs">X / Twitter</a>
+            </div>
+          </div>
+
+          <!-- Pane 2: Send Email Invites (SMTP) -->
+          <div id="pane-share-email" class="hidden">
+            <form id="form-send-room-invites">
+              <div id="invite-email-status-msg" class="brutal-alert brutal-alert-yellow hidden"></div>
+
+              <div class="form-group" style="margin-bottom: 0.85rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                  <label class="form-label" style="font-size: 0.82rem; margin: 0;">RECIPIENT EMAILS</label>
+                  <div style="display: flex; gap: 0.35rem; align-items: center;">
+                    <span id="email-chips-counter" class="brutal-pill bg-pastel-cyan" style="font-size: 0.7rem; padding: 1px 6px;">0 added</span>
+                    <button type="button" id="btn-clear-email-chips" class="brutal-btn brutal-btn-white brutal-btn-xs" style="padding: 1px 6px; font-size: 0.7rem;" title="Clear all added emails">Clear</button>
+                  </div>
+                </div>
+
+                <!-- Interactive Chips Box -->
+                <div id="email-chip-box" class="email-chip-box">
+                  <div id="email-chips-list" style="display: contents;"></div>
+                  <input type="text" id="invite-email-tag-input" class="email-tag-input" placeholder="Type email &amp; press Enter or comma..." autocomplete="off">
+                </div>
+
+                <div style="display: flex; gap: 0.35rem; align-items: center; justify-content: space-between; margin-top: 0.25rem;">
+                  <small style="font-size: 0.74rem; color: var(--text-muted); font-weight: 700;">Press Enter, comma, or paste a list of emails.</small>
+                  <button type="button" class="brutal-btn brutal-btn-white brutal-btn-xs" id="btn-add-email-chip" style="font-size: 0.72rem; padding: 2px 8px;">+ Add Email</button>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 1.15rem;">
+                <label class="form-label" style="font-size: 0.82rem;">CUSTOM NOTE (OPTIONAL)</label>
+                <input type="text" id="invite-custom-note" class="brutal-input" placeholder="e.g. Come join the movie night! Snacks are ready 🍿" style="width: 100%; font-size: 0.88rem;">
+              </div>
+
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button type="submit" class="brutal-btn brutal-btn-mint" id="btn-send-email-invites" style="flex: 1;">
+                  <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="22" x2="11" y1="2" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                  <span id="send-email-btn-text">SEND INVITATIONS →</span>
+                </button>
+                <button type="button" class="brutal-btn brutal-btn-white" id="btn-copy-email-template" title="Copy email text template to clipboard">
+                  <svg class="lucide icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                  <span>Copy Template</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+        <div class="modal-footer" style="padding: 0.75rem 1.25rem; display: flex; justify-content: flex-end;">
+          <button type="button" class="brutal-btn brutal-btn-white close-modal">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating Neo-Brutalist Toast Notifications Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+  </div>
+
+  <script src="/static/qrcode.min.js"></script>
+  <script src="/static/app.js?v=14.2"></script>
+</body>
+</html>
